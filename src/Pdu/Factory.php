@@ -4,6 +4,7 @@ namespace alexeevdv\React\Smpp\Pdu;
 
 use alexeevdv\React\Smpp\Exception\MalformedPdu;
 use alexeevdv\React\Smpp\Exception\UnknownPdu;
+use alexeevdv\React\Smpp\Utils\DataWrapper;
 
 class Factory implements Contract\Factory
 {
@@ -33,8 +34,13 @@ class Factory implements Contract\Factory
 
     public function createFromBuffer(string $buffer): Contract\Pdu
     {
-        @extract(unpack("Nlength/Nid/Nstatus/Nsequence", $buffer));
-        if (!isset($length) || !isset($id) || !isset($status) || !isset($sequence) || strlen($buffer) !== $length) {
+        $wrapper = new DataWrapper($buffer);
+        $length = $wrapper->readInt32();
+        $id = $wrapper->readInt32();
+        $status = $wrapper->readInt32();
+        $sequence = $wrapper->readInt32();
+
+        if (is_null($length) || is_null($id) || is_null($status) || is_null($sequence) || strlen($buffer) !== $length) {
             throw new MalformedPdu(bin2hex($buffer));
         }
 

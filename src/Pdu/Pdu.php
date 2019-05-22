@@ -36,6 +36,12 @@ abstract class Pdu implements Contract\Pdu
         return $this->commandStatus;
     }
 
+    public function sendCommandStatus(int $status): self
+    {
+        $this->commandStatus = $status;
+        return $this;
+    }
+
     public function getSequenceNumber(): int
     {
         return $this->sequenceNumber;

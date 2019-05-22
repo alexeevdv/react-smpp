@@ -2,6 +2,8 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
+use alexeevdv\React\Smpp\Utils\DataWrapper;
+
 class BindTransmitter extends Pdu implements Contract\BindTransmitter
 {
     /**
@@ -21,20 +23,22 @@ class BindTransmitter extends Pdu implements Contract\BindTransmitter
             return;
         }
 
-        list($this->systemId, $this->password) = explode("\0", $body, 3);
+        $wrapper = new DataWrapper($body);
+        $this->systemId = $wrapper->readNullTerminatedString();
+        $this->password = $wrapper->readNullTerminatedString();
     }
 
-    public function getSystemId(): string
+    public function getCommandId(): int
     {
         return 0x00000002;
     }
 
-    public function getPassword(): string
+    public function getSystemId(): string
     {
         return $this->systemId;
     }
 
-    public function getCommandId(): int
+    public function getPassword(): string
     {
         return $this->password;
     }
