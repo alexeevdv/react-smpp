@@ -1,0 +1,12 @@
+{
+    "name": "alexeevdv/react-smpp",
+    "autoload": {
+        "psr-4": {
+            "alexeevdv\\React\\Smpp\\" : "src"
+        }
+    },
+    "require": {
+        "react/event-loop": "^1.1",
+        "react/socket": "^1.2"
+    }
+}
