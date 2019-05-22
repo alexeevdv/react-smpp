@@ -1,5 +1,7 @@
 {
     "name": "alexeevdv/react-smpp",
+    "description": "Async SMPP server and client implementations for ReactPHP.",
+    "keywords": ["react", "reactphp", "smpp"],
     "autoload": {
         "psr-4": {
             "alexeevdv\\React\\Smpp\\" : "src"
