@@ -4,6 +4,8 @@ namespace alexeevdv\React\Smpp\Pdu;
 
 use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
+use alexeevdv\React\Smpp\Proto\Contract\DataCoding;
+use alexeevdv\React\Smpp\Proto\DataCoding\UCS2;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
 class SubmitSm extends Pdu implements Contract\SubmitSm
@@ -90,8 +92,15 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         $wrapper->readInt8();
 
         $smLength = $wrapper->readInt8();
+        $shortMessage = $wrapper->readBytes($smLength);
+
+        if ($this->getDataCoding() === DataCoding::UCS2) {
+            $decoder = new UCS2;
+            $shortMessage = $decoder->decode($shortMessage);
+        }
+
         $this->setShortMessage(
-            $wrapper->readBytes($smLength)
+            $shortMessage
         );
 
         /* Body layout
