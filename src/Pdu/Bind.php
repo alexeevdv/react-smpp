@@ -53,11 +53,9 @@ abstract class Bind extends Pdu implements Contract\Bind
         $this->setInterfaceVersion(
             $wrapper->readInt8()
         );
-        $this->setAddress(new Address(
-            $wrapper->readInt8(),
-            $wrapper->readInt8(),
-            $wrapper->readNullTerminatedString(41)
-        ));
+        $this->setAddress(
+            $wrapper->readAddress(41)
+        );
     }
 
     public function getSystemType(): string
@@ -104,12 +102,12 @@ abstract class Bind extends Pdu implements Contract\Bind
         return $this;
     }
 
-    public function getAddress(): AddressContract
+    public function getAddress(): ?AddressContract
     {
         return $this->address;
     }
 
-    public function setAddress(AddressContract $address): self
+    public function setAddress(?AddressContract $address): self
     {
         $this->address = $address;
         return $this;
@@ -126,12 +124,8 @@ abstract class Bind extends Pdu implements Contract\Bind
             $this->getSystemType()
         )->writeInt8(
             $this->getInterfaceVersion()
-        )->writeInt8(
-            $this->getAddress()->getTon()
-        )->writeInt8(
-            $this->getAddress()->getNpi()
-        )->writeNullTerminatedString(
-            $this->getAddress()->getValue()
+        )->writeAddress(
+            $this->getAddress()
         );
         $this->setBody($wrapper->__toString());
         return parent::__toString();

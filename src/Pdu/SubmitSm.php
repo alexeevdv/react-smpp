@@ -87,16 +87,12 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         $this->setServiceType(
             $wrapper->readNullTerminatedString(6)
         );
-        $this->setSourceAddress(new Address(
-            $wrapper->readInt8(),
-            $wrapper->readInt8(),
-            $wrapper->readNullTerminatedString(21)
-        ));
-        $this->setDestinationAddress(new Address(
-            $wrapper->readInt8(),
-            $wrapper->readInt8(),
-            $wrapper->readNullTerminatedString(21)
-        ));
+        $this->setSourceAddress(
+            $wrapper->readAddress()
+        );
+        $this->setDestinationAddress(
+            $wrapper->readAddress()
+        );
         $this->setEsmClass(
             $wrapper->readInt8()
         );
@@ -183,12 +179,12 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         return $this;
     }
 
-    public function getSourceAddress(): AddressContract
+    public function getSourceAddress(): ?AddressContract
     {
         return $this->sourceAddress;
     }
 
-    public function setSourceAddress(AddressContract $address): self
+    public function setSourceAddress(?AddressContract $address): self
     {
         $this->sourceAddress = $address;
         return $this;
@@ -320,18 +316,10 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         $wrapper = new DataWrapper('');
         $wrapper->writeNullTerminatedString(
             $this->getServiceType()
-        )->writeInt8(
-            $this->getSourceAddress()->getTon()
-        )->writeInt8(
-            $this->getSourceAddress()->getNpi()
-        )->writeNullTerminatedString(
-            $this->getSourceAddress()->getValue()
-        )->writeInt8(
-            $this->getDestinationAddress()->getTon()
-        )->writeInt8(
-            $this->getDestinationAddress()->getNpi()
-        )->writeNullTerminatedString(
-            $this->getDestinationAddress()->getValue()
+        )->writeAddress(
+            $this->getSourceAddress()
+        )->writeAddress(
+            $this->getDestinationAddress()
         )->writeInt8(
             $this->getEsmClass()
         )->writeInt8(

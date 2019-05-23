@@ -14,5 +14,5 @@ interface Bind extends Pdu
 
     public function getInterfaceVersion(): int;
 
-    public function getAddress(): Address;
+    public function getAddress(): ?Address;
 }

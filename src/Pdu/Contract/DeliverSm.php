@@ -2,6 +2,6 @@
 
 namespace alexeevdv\React\Smpp\Pdu\Contract;
 
-interface DeliverSm extends Pdu
+interface DeliverSm extends SubmitSm
 {
 }

@@ -11,7 +11,7 @@ class SubmitSmResp extends Pdu implements Contract\SubmitSmResp
      */
     private $messageId;
 
-    public function __construct(int $status, int $sequence, $body = '')
+    public function __construct(int $status = 0, int $sequence = 1, $body = '')
     {
         parent::__construct($status, $sequence, $body);
 
@@ -37,5 +37,13 @@ class SubmitSmResp extends Pdu implements Contract\SubmitSmResp
     {
         $this->messageId = $messageId;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $wrapper = new DataWrapper('');
+        $wrapper->writeNullTerminatedString($this->getMessageId());
+        $this->setBody($wrapper->__toString());
+        return parent::__toString();
     }
 }

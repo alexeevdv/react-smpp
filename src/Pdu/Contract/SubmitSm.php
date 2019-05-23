@@ -9,7 +9,7 @@ interface SubmitSm extends Pdu
 {
     public function getServiceType(): string;
 
-    public function getSourceAddress(): Address;
+    public function getSourceAddress(): ?Address;
 
     public function getDestinationAddress(): Address;
 

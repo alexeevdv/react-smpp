@@ -17,9 +17,7 @@ class BindReceiverTest extends Unit
         $this->assertEquals('Zf4*PURm', $pdu->getPassword());
         $this->assertEquals('', $pdu->getSystemType());
         $this->assertEquals(52, $pdu->getInterfaceVersion());
-        $this->assertEquals(0, $pdu->getAddress()->getTon());
-        $this->assertEquals(0, $pdu->getAddress()->getNpi());
-        $this->assertEquals('', $pdu->getAddress()->getValue());
+        $this->assertEquals(null, $pdu->getAddress());
     }
 
     public function testAssemblingData()
@@ -29,13 +27,7 @@ class BindReceiverTest extends Unit
         $pdu->setPassword('Zf4*PURm');
         $pdu->setSystemType('');
         $pdu->setInterfaceVersion(52);
-        $pdu->setAddress(
-            $this->makeEmpty(Address::class, [
-                'getTon' => 0,
-                'getNpi' => 0,
-                'getValue' => ''
-            ])
-        );
+        $pdu->setAddress(null);
 
         $expectedData = '00000028000000010000000000000001546573745f73667477005a66342a5055526d000034000000';
         $this->assertEquals(hex2bin($expectedData), $pdu->__toString());
