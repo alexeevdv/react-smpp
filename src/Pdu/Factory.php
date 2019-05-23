@@ -35,14 +35,18 @@ class Factory implements Contract\Factory
     public function createFromBuffer(string $buffer): Contract\Pdu
     {
         $wrapper = new DataWrapper($buffer);
+        if ($wrapper->bytesLeft() < 16) {
+            throw new MalformedPdu(bin2hex($buffer));
+        }
+
         $length = $wrapper->readInt32();
+        if (strlen($buffer) !== $length) {
+            throw new MalformedPdu(bin2hex($buffer));
+        }
+
         $id = $wrapper->readInt32();
         $status = $wrapper->readInt32();
         $sequence = $wrapper->readInt32();
-
-        if (is_null($length) || is_null($id) || is_null($status) || is_null($sequence) || strlen($buffer) !== $length) {
-            throw new MalformedPdu(bin2hex($buffer));
-        }
 
         if (!isset($this->classMap[$id])) {
             throw new UnknownPdu(bin2hex($id));

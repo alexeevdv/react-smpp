@@ -2,27 +2,19 @@
 
 namespace alexeevdv\React\Smpp\Pdu\Contract;
 
+use alexeevdv\React\Smpp\Proto\Contract\Address;
+
 interface SubmitSm extends Pdu
 {
-    // TODO combine to Address object
-    public function getSourceAddressTon(): int;
+    public function getServiceType(): string;
 
-    public function getSourceAddressNpi(): int;
+    public function getSourceAddress(): Address;
 
-    public function getSourceAddress(): string;
-
-    // TODO combine to Address object
-    public function getDestinationAddressTon(): int;
-
-    public function getDestinationAddressNpi(): int;
-
-    public function getDestinationAddress(): string;
+    public function getDestinationAddress(): Address;
 
     public function getEsmClass(): int;
 
     public function getDataCoding(): int;
-
-    public function getSmLength(): int;
 
     public function getShortMessage(): string;
 }
