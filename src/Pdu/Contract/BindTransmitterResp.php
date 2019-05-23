@@ -2,7 +2,6 @@
 
 namespace alexeevdv\React\Smpp\Pdu\Contract;
 
-interface BindTransmitterResp extends Pdu
+interface BindTransmitterResp extends BindResp
 {
-    public function getSystemId(): string;
 }

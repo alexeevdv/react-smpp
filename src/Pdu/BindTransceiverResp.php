@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class BindTransceiverResp extends Pdu implements Contract\BindTransceiverResp
+class BindTransceiverResp extends BindResp implements Contract\BindTransceiverResp
 {
     public function getCommandId(): int
     {

@@ -2,6 +2,6 @@
 
 namespace alexeevdv\React\Smpp\Pdu\Contract;
 
-interface BindTransceiverResp extends Pdu
+interface BindTransceiverResp extends BindResp
 {
 }
