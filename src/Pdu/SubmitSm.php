@@ -50,7 +50,7 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
      */
     private $scheduleDeliveryTime;
 
-    public function __construct(int $status, int $sequence, $body = '')
+    public function __construct(int $status = 0, int $sequence = 1, $body = '')
     {
         parent::__construct($status, $sequence, $body);
 
@@ -237,5 +237,60 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     {
         $this->scheduleDeliveryTime = $scheduleDeliveryTime;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $wrapper = new DataWrapper('');
+        $wrapper->writeNullTerminatedString(
+            $this->getServiceType()
+        )->writeInt8(
+            $this->getSourceAddress()->getTon()
+        )->writeInt8(
+            $this->getSourceAddress()->getNpi()
+        )->writeNullTerminatedString(
+            $this->getSourceAddress()->getValue()
+        )->writeInt8(
+            $this->getDestinationAddress()->getTon()
+        )->writeInt8(
+            $this->getDestinationAddress()->getNpi()
+        )->writeNullTerminatedString(
+            $this->getDestinationAddress()->getValue()
+        )->writeInt8(
+            $this->getEsmClass()
+        )->writeInt8(
+            // protocol_id int8
+            0
+        )->writeInt8(
+            // priority_flag int8
+            0
+        )->writeNullTerminatedString(
+            $this->getScheduleDeliveryTime()
+            ? (new DateTime($this->getScheduleDeliveryTime()->format('c')))->__toString()
+            : ''
+        )->writeNullTerminatedString(
+            $this->getValidityPeriod()
+            ? (new DateTime($this->getValidityPeriod()->format('c')))->__toString()
+            : ''
+        )->writeInt8(
+            // registered_delivery int8
+            0
+        )->writeInt8(
+            // replace_if_present_flag int8
+            0
+        )->writeInt8(
+            $this->getDataCoding()
+        )->writeInt8(
+            // sm_default_msg_id int8
+            0
+        )->writeInt8(
+            strlen($this->getShortMessage())
+        )->writeBytes(
+            $this->getShortMessage()
+        );
+
+        $this->setBody($wrapper->__toString());
+
+        return parent::__toString();
     }
 }

@@ -3,7 +3,9 @@
 namespace tests\unit\Pdu;
 
 use alexeevdv\React\Smpp\Pdu\SubmitSm;
+use alexeevdv\React\Smpp\Proto\Address;
 use Codeception\Test\Unit;
+use DateTime;
 
 class SubmitSmTest extends Unit
 {
@@ -94,4 +96,40 @@ class SubmitSmTest extends Unit
 {"command_length":236,"command_id":4,"command_status":0,"sequence_number":17,"command":"submit_sm","service_type":"","source_addr_ton":5,"source_addr_npi":1,"source_addr":"34160460060","dest_addr_ton":5,"dest_addr_npi":1,"destination_addr":"2348119265650","esm_class":0,"protocol_id":0,"priority_flag":0,"schedule_delivery_time":"","validity_period":"","registered_delivery":1,"replace_if_present_flag":0,"data_coding":0,"sm_default_msg_id":0,"short_message":{"message":"Grab your 100% Daily Deal at spc-ply.com/spd now! Log in with Angelsophia and play it your way! Contact us to unsubscribe. Visit our 1x BBbet Visit our 1x BBbet Visit our 1x BBbet"}}
 
      */
+
+    public function testAssemblingData()
+    {
+        $rawData = "000000a5000000040000000000000001";
+        $rawData.= "0005004566756e000101373939393837333937333800030000003139303532343039303831393030302b000100080070";
+        $message = "0412043004480020043a043e0434003a0020003300310031003300390038002e";
+        $message.= "00200412043204350434043804420435002004350433043e0020043704300020";
+        $message.= "003300300020043c0438043d04430442002e005b004500660075006e00200050";
+        $message.= "006c006100740066006f0072006d005d";
+
+        $pdu = new SubmitSm();
+
+        $pdu->setServiceType('');
+        $pdu->setSourceAddress(
+            $this->makeEmpty(Address::class, [
+                'getTon' => 5,
+                'getNpi' => 0,
+                'getValue' => 'Efun',
+            ])
+        );
+        $pdu->setDestinationAddress(
+            $this->makeEmpty(Address::class, [
+                'getTon' => 1,
+                'getNpi' => 1,
+                'getValue' => '79998739738'
+            ])
+        );
+        $pdu->setEsmClass(3);
+        $pdu->setDataCoding(8);
+        $pdu->setValidityPeriod(
+            DateTime::createFromFormat('Y-m-d H:i:s', '2019-05-24 09:08:19')
+        );
+        $pdu->setShortMessage(hex2bin($message));
+
+        $this->assertEquals(hex2bin($rawData . $message), $pdu->__toString());
+    }
 }

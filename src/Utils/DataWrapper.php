@@ -60,6 +60,12 @@ class DataWrapper
         return $this;
     }
 
+    public function writeBytes(string $string): self
+    {
+        $this->data .= $string;
+        return $this;
+    }
+
     public function readBytes($length): string
     {
         $data = '';
