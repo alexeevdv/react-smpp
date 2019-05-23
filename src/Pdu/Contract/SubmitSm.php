@@ -22,4 +22,14 @@ interface SubmitSm extends Pdu
     public function getValidityPeriod(): ?DateTimeInterface;
 
     public function getScheduleDeliveryTime(): ?DateTimeInterface;
+
+    public function getRegisteredDelivery(): int;
+
+    public function getProtocolId(): int;
+
+    public function getPriorityFlag(): int;
+
+    public function getReplaceIfPresentFlag(): int;
+
+    public function getSmDefaultMsgId(): int;
 }

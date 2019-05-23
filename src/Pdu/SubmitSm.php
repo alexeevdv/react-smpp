@@ -38,7 +38,7 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     /**
      * @var int
      */
-    private $esmClass;
+    private $esmClass = 0;
 
     /**
      * @var DateTimeInterface
@@ -49,6 +49,31 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
      * @var DateTimeInterface
      */
     private $scheduleDeliveryTime;
+
+    /**
+     * @var int
+     */
+    private $registeredDelivery;
+
+    /**
+     * @var int
+     */
+    private $protocolId = 0;
+
+    /**
+     * @var int
+     */
+    private $priorityFlag = 0;
+
+    /**
+     * @var int
+     */
+    private $replaceIfPresentFlag = 0;
+
+    /**
+     * @var int
+     */
+    private $smDefaultMsgId = 0;
 
     public function __construct(int $status = 0, int $sequence = 1, $body = '')
     {
@@ -75,36 +100,32 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         $this->setEsmClass(
             $wrapper->readInt8()
         );
-
-        // protocol_id int8
-        $wrapper->readInt8();
-
-        // priority_flag int8
-        $wrapper->readInt8();
-
+        $this->setProtocolId(
+            $wrapper->readInt8()
+        );
+        $this->setPriorityFlag(
+            $wrapper->readInt8()
+        );
         $scheduleDeliveryTime = $wrapper->readNullTerminatedString(17);
         if (strlen($scheduleDeliveryTime)) {
             $this->setScheduleDeliveryTime(new DateTime($scheduleDeliveryTime));
         }
-
         $validityPeriod = $wrapper->readNullTerminatedString(17);
         if (strlen($validityPeriod)) {
             $this->setValidityPeriod(new DateTime($validityPeriod));
         }
-
-        // registered_delivery int8
-        $wrapper->readInt8();
-
-        // replace_if_present_flag int8
-        $wrapper->readInt8();
-
+        $this->setRegisteredDelivery(
+            $wrapper->readInt8()
+        );
+        $this->setReplaceIfPresentFlag(
+            $wrapper->readInt8()
+        );
         $this->setDataCoding(
             $wrapper->readInt8()
         );
-
-        // sm_default_msg_id int8
-        $wrapper->readInt8();
-
+        $this->setSmDefaultMsgId(
+            $wrapper->readInt8()
+        );
         $smLength = $wrapper->readInt8();
         $this->setShortMessage(
             $wrapper->readBytes($smLength)
@@ -239,6 +260,61 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         return $this;
     }
 
+    public function getRegisteredDelivery(): int
+    {
+        return $this->registeredDelivery;
+    }
+
+    public function setRegisteredDelivery(int $registeredDelivery): self
+    {
+        $this->registeredDelivery = $registeredDelivery;
+        return $this;
+    }
+
+    public function getProtocolId(): int
+    {
+        return $this->protocolId;
+    }
+
+    public function setProtocolId(int $protocolId): self
+    {
+        $this->protocolId = $protocolId;
+        return $this;
+    }
+
+    public function getPriorityFlag(): int
+    {
+        return $this->priorityFlag;
+    }
+
+    public function setPriorityFlag(int $priorityFlag): self
+    {
+        $this->priorityFlag = $priorityFlag;
+        return $this;
+    }
+
+    public function getReplaceIfPresentFlag(): int
+    {
+        return $this->replaceIfPresentFlag;
+    }
+
+    public function setReplaceIfPresentFlag(int $replaceIfPresentFlag): self
+    {
+        $this->replaceIfPresentFlag = $replaceIfPresentFlag;
+        return $this;
+    }
+
+    public function getSmDefaultMsgId(): int
+    {
+        return $this->smDefaultMsgId;
+    }
+
+    public function setSmDefaultMsgId(int $smDefaultMsgId): self
+    {
+        $this->smDefaultMsgId = $smDefaultMsgId;
+        return $this;
+    }
+
     public function __toString(): string
     {
         $wrapper = new DataWrapper('');
@@ -259,11 +335,9 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         )->writeInt8(
             $this->getEsmClass()
         )->writeInt8(
-            // protocol_id int8
-            0
+            $this->getProtocolId()
         )->writeInt8(
-            // priority_flag int8
-            0
+            $this->getPriorityFlag()
         )->writeNullTerminatedString(
             $this->getScheduleDeliveryTime()
             ? (new DateTime($this->getScheduleDeliveryTime()->format('c')))->__toString()
@@ -273,16 +347,13 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
             ? (new DateTime($this->getValidityPeriod()->format('c')))->__toString()
             : ''
         )->writeInt8(
-            // registered_delivery int8
-            0
+            $this->getRegisteredDelivery()
         )->writeInt8(
-            // replace_if_present_flag int8
-            0
+            $this->getReplaceIfPresentFlag()
         )->writeInt8(
             $this->getDataCoding()
         )->writeInt8(
-            // sm_default_msg_id int8
-            0
+            $this->getSmDefaultMsgId()
         )->writeInt8(
             strlen($this->getShortMessage())
         )->writeBytes(

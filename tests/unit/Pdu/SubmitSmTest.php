@@ -32,7 +32,8 @@ class SubmitSmTest extends Unit
         $this->assertEquals(hex2bin($message), $pdu->getShortMessage());
         $this->assertEquals('2019-05-24 09:08:19', $pdu->getValidityPeriod()->format('Y-m-d H:i:s'));
         $this->assertNull($pdu->getScheduleDeliveryTime());
-        // "protocol_id":0,"priority_flag":0,"registered_delivery":1,"replace_if_present_flag":0, "sm_default_msg_id": 0
+        $this->assertEquals(1, $pdu->getRegisteredDelivery());
+        // "protocol_id":0,"priority_flag":0, "replace_if_present_flag":0, "sm_default_msg_id": 0
     }
 
     public function testParsingRawData2()
@@ -54,7 +55,7 @@ class SubmitSmTest extends Unit
         $this->assertEquals(hex2bin($message), $pdu->getShortMessage());
         $this->assertNull($pdu->getValidityPeriod());
         $this->assertNull($pdu->getScheduleDeliveryTime());
-        //"protocol_id":0,"priority_flag":0,"registered_delivery":1,"replace_if_present_flag":0,"sm_default_msg_id":0
+        $this->assertEquals(1, $pdu->getRegisteredDelivery());
     }
 
     public function testParsingRawData3()
@@ -99,7 +100,7 @@ class SubmitSmTest extends Unit
 
     public function testAssemblingData()
     {
-        $rawData = "000000a5000000040000000000000001";
+        $rawData = "000000b0000000040000000000000001";
         $rawData.= "0005004566756e000101373939393837333937333800030000003139303532343039303831393030302b000100080070";
         $message = "0412043004480020043a043e0434003a0020003300310031003300390038002e";
         $message.= "00200412043204350434043804420435002004350433043e0020043704300020";
@@ -129,6 +130,7 @@ class SubmitSmTest extends Unit
             DateTime::createFromFormat('Y-m-d H:i:s', '2019-05-24 09:08:19')
         );
         $pdu->setShortMessage(hex2bin($message));
+        $pdu->setRegisteredDelivery(1);
 
         $this->assertEquals(hex2bin($rawData . $message), $pdu->__toString());
     }
