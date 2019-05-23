@@ -4,15 +4,12 @@ namespace alexeevdv\React\Smpp;
 
 use alexeevdv\React\Smpp\Pdu\BindReceiver;
 use alexeevdv\React\Smpp\Pdu\BindTransceiver;
-use alexeevdv\React\Smpp\Pdu\BindTransceiverResp;
 use alexeevdv\React\Smpp\Pdu\CancelSm;
 use alexeevdv\React\Smpp\Pdu\Contract\BindTransmitter;
 use alexeevdv\React\Smpp\Pdu\Contract\Pdu;
 use alexeevdv\React\Smpp\Pdu\Contract\SubmitSm;
-use alexeevdv\React\Smpp\Pdu\DeliverSm;
 use alexeevdv\React\Smpp\Pdu\DeliverSmResp;
 use alexeevdv\React\Smpp\Pdu\EnquireLink;
-use alexeevdv\React\Smpp\Pdu\EnquireLinkResp;
 use alexeevdv\React\Smpp\Pdu\Factory;
 use alexeevdv\React\Smpp\Pdu\QuerySm;
 use alexeevdv\React\Smpp\Pdu\ReplaceSm;
@@ -36,7 +33,8 @@ final class Server extends EventEmitter implements ServerInterface
         $this->server = $server;
 
         $that = $this;
-        $this->server->on('connection', function (ConnectionInterface $connection) use ($loop, $that) {
+        $this->server->on('connection', function (ConnectionInterface $conn) use ($loop, $that) {
+            $connection = new Connection($conn);
 
             // TODO start timer for enquire_link
 
@@ -89,8 +87,7 @@ final class Server extends EventEmitter implements ServerInterface
                 }
 
                 if ($pdu instanceof EnquireLink) {
-                    $response = new EnquireLinkResp($pdu->getCommandStatus(), $pdu->getSequenceNumber());
-                    return $connection->emit('send', [$response]);
+                    return $connection->emit('enquire_link', [$pdu]);
                 }
             });
 
@@ -98,7 +95,7 @@ final class Server extends EventEmitter implements ServerInterface
                 $connection->write($pdu->__toString());
             });
 
-            $that->emit('connection', [$connection]);
+            $that->emit('connection', []);
         });
     }
 
