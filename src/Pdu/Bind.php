@@ -33,7 +33,7 @@ abstract class Bind extends Pdu implements Contract\Bind
      */
     private $address;
 
-    public function __construct(int $status, int $sequence, $body = '')
+    public function __construct(int $status = 0, int $sequence = 1, $body = '')
     {
         parent::__construct($status, $sequence, $body);
         if (strlen($body) === 0) {
@@ -62,7 +62,7 @@ abstract class Bind extends Pdu implements Contract\Bind
 
     public function getSystemType(): string
     {
-        return $this->systemType;
+        return (string) $this->systemType;
     }
 
     public function setSystemType(string $systemType): self
@@ -73,7 +73,7 @@ abstract class Bind extends Pdu implements Contract\Bind
 
     public function getSystemId(): string
     {
-        return $this->systemId;
+        return (string) $this->systemId;
     }
 
     public function setSystemId(string $systemId): self
@@ -84,7 +84,7 @@ abstract class Bind extends Pdu implements Contract\Bind
 
     public function getPassword(): string
     {
-        return $this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -95,7 +95,7 @@ abstract class Bind extends Pdu implements Contract\Bind
 
     public function getInterfaceVersion(): int
     {
-        return $this->interfaceVersion;
+        return (int) $this->interfaceVersion;
     }
 
     public function setInterfaceVersion(int $interfaceVersion): self
@@ -113,5 +113,27 @@ abstract class Bind extends Pdu implements Contract\Bind
     {
         $this->address = $address;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $wrapper = new DataWrapper('');
+        $wrapper->writeNullTerminatedString(
+            $this->getSystemId()
+        )->writeNullTerminatedString(
+            $this->getPassword()
+        )->writeNullTerminatedString(
+            $this->getSystemType()
+        )->writeInt8(
+            $this->getInterfaceVersion()
+        )->writeInt8(
+            $this->getAddress()->getTon()
+        )->writeInt8(
+            $this->getAddress()->getNpi()
+        )->writeNullTerminatedString(
+            $this->getAddress()->getValue()
+        );
+        $this->setBody($wrapper->__toString());
+        return parent::__toString();
     }
 }

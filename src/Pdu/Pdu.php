@@ -52,6 +52,12 @@ abstract class Pdu implements Contract\Pdu
         return $this->body;
     }
 
+    public function setBody(string $body): self
+    {
+        $this->body = $body;
+        return $this;
+    }
+
     public function __toString(): string
     {
         return pack(

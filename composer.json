@@ -11,5 +11,8 @@
         "php": "^7.1",
         "react/event-loop": "^1.1",
         "react/socket": "^1.2"
+    },
+    "require-dev": {
+        "codeception/codeception": "^3.0"
     }
 }

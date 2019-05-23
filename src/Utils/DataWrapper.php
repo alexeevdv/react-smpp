@@ -21,6 +21,12 @@ class DataWrapper
         return $value;
     }
 
+    public function writeInt8(int $value): self
+    {
+        $this->data .= pack('C', $value);
+        return $this;
+    }
+
     public function readInt16(): int
     {
         $value = unpack('n', $this->data, $this->position)[1];
@@ -46,6 +52,12 @@ class DataWrapper
         $this->position++;
 
         return $data;
+    }
+
+    public function writeNullTerminatedString(string $string): self
+    {
+        $this->data .= $string . "\0";
+        return $this;
     }
 
     public function readBytes($length): string
@@ -88,5 +100,10 @@ class DataWrapper
     public function bytesLeft()
     {
         return strlen($this->data) - $this->position;
+    }
+
+    public function __toString(): string
+    {
+        return $this->data;
     }
 }
