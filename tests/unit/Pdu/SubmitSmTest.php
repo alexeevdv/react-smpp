@@ -33,7 +33,6 @@ class SubmitSmTest extends Unit
         $this->assertEquals('2019-05-24 09:08:19', $pdu->getValidityPeriod()->format('Y-m-d H:i:s'));
         $this->assertNull($pdu->getScheduleDeliveryTime());
         $this->assertEquals(1, $pdu->getRegisteredDelivery());
-        // "protocol_id":0,"priority_flag":0, "replace_if_present_flag":0, "sm_default_msg_id": 0
     }
 
     public function testParsingRawData2()
@@ -80,23 +79,7 @@ class SubmitSmTest extends Unit
         $this->assertEquals(hex2bin($message), $pdu->getShortMessage());
         $this->assertNull($pdu->getValidityPeriod());
         $this->assertNull($pdu->getScheduleDeliveryTime());
-        // "protocol_id":0,"priority_flag":0,"registered_delivery":1, "replace_if_present_flag":0,"sm_default_msg_id":0
     }
-    /*
-
-    /*
-
-0000: 0000 00ec 0000 0004 0000 0000 0000 0011 0005 0133 3431 3630 3436 3030 3630 0005  ...................34160460060..
-0020: 0132 3334 3831 3139 3236 3536 3530 0000 0000 0000 0100 0000 b347 7261 6220 796f  .2348119265650...........Grab yo
-0040: 7572 2031 3030 2520 4461 696c 7920 4465 616c 2061 7420 7370 632d 706c 792e 636f  ur 100% Daily Deal at spc-ply.co
-0060: 6d2f 7370 6420 6e6f 7721 204c 6f67 2069 6e20 7769 7468 2041 6e67 656c 736f 7068  m/spd now! Log in with Angelsoph
-0080: 6961 2061 6e64 2070 6c61 7920 6974 2079 6f75 7220 7761 7921 2043 6f6e 7461 6374  ia and play it your way! Contact
-00a0: 2075 7320 746f 2075 6e73 7562 7363 7269 6265 2e20 5669 7369 7420 6f75 7220 3178   us to unsubscribe. Visit our 1x
-00c0: 2042 4262 6574 2056 6973 6974 206f 7572 2031 7820 4242 6265 7420 5669 7369 7420   BBbet Visit our 1x BBbet Visit
-00e0: 6f75 7220 3178 2042 4262 6574
-{"command_length":236,"command_id":4,"command_status":0,"sequence_number":17,"command":"submit_sm","service_type":"","source_addr_ton":5,"source_addr_npi":1,"source_addr":"34160460060","dest_addr_ton":5,"dest_addr_npi":1,"destination_addr":"2348119265650","esm_class":0,"protocol_id":0,"priority_flag":0,"schedule_delivery_time":"","validity_period":"","registered_delivery":1,"replace_if_present_flag":0,"data_coding":0,"sm_default_msg_id":0,"short_message":{"message":"Grab your 100% Daily Deal at spc-ply.com/spd now! Log in with Angelsophia and play it your way! Contact us to unsubscribe. Visit our 1x BBbet Visit our 1x BBbet Visit our 1x BBbet"}}
-
-     */
 
     public function testAssemblingData()
     {
