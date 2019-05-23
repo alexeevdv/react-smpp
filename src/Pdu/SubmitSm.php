@@ -4,9 +4,9 @@ namespace alexeevdv\React\Smpp\Pdu;
 
 use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
-use alexeevdv\React\Smpp\Proto\Contract\DataCoding;
-use alexeevdv\React\Smpp\Proto\DataCoding\UCS2;
+use alexeevdv\React\Smpp\Proto\DateTime;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
+use DateTimeInterface;
 
 class SubmitSm extends Pdu implements Contract\SubmitSm
 {
@@ -40,6 +40,16 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
      */
     private $esmClass;
 
+    /**
+     * @var DateTimeInterface
+     */
+    private $validityPeriod;
+
+    /**
+     * @var DateTimeInterface
+     */
+    private $scheduleDeliveryTime;
+
     public function __construct(int $status, int $sequence, $body = '')
     {
         parent::__construct($status, $sequence, $body);
@@ -72,11 +82,15 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         // priority_flag int8
         $wrapper->readInt8();
 
-        // schedule_delivery_time C-string 1 or 17
-        $wrapper->readNullTerminatedString(17);
+        $scheduleDeliveryTime = $wrapper->readNullTerminatedString(17);
+        if (strlen($scheduleDeliveryTime)) {
+            $this->setScheduleDeliveryTime(new DateTime($scheduleDeliveryTime));
+        }
 
-        // validity_period C-string 1 or 17
-        $wrapper->readNullTerminatedString(17);
+        $validityPeriod = $wrapper->readNullTerminatedString(17);
+        if (strlen($validityPeriod)) {
+            $this->setValidityPeriod(new DateTime($validityPeriod));
+        }
 
         // registered_delivery int8
         $wrapper->readInt8();
@@ -92,15 +106,8 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         $wrapper->readInt8();
 
         $smLength = $wrapper->readInt8();
-        $shortMessage = $wrapper->readBytes($smLength);
-
-        if ($this->getDataCoding() === DataCoding::UCS2) {
-            $decoder = new UCS2;
-            $shortMessage = $decoder->decode($shortMessage);
-        }
-
         $this->setShortMessage(
-            $shortMessage
+            $wrapper->readBytes($smLength)
         );
 
         /* Body layout
@@ -207,6 +214,28 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     public function setShortMessage(string $shortMessage): self
     {
         $this->shortMessage = $shortMessage;
+        return $this;
+    }
+
+    public function getValidityPeriod(): ?DateTimeInterface
+    {
+        return $this->validityPeriod;
+    }
+
+    public function setValidityPeriod(?DateTimeInterface $validityPeriod): self
+    {
+        $this->validityPeriod = $validityPeriod;
+        return $this;
+    }
+
+    public function getScheduleDeliveryTime(): ?DateTimeInterface
+    {
+        return $this->scheduleDeliveryTime;
+    }
+
+    public function setScheduleDeliveryTime(?DateTimeInterface $scheduleDeliveryTime): self
+    {
+        $this->scheduleDeliveryTime = $scheduleDeliveryTime;
         return $this;
     }
 }
