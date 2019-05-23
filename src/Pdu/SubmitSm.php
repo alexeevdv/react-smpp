@@ -2,8 +2,8 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
+use alexeevdv\React\Smpp\Proto\Contract\DataCoding;
 use alexeevdv\React\Smpp\Proto\DateTime;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 use DateTimeInterface;
@@ -13,7 +13,7 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     /**
      * @var string
      */
-    private $serviceType;
+    private $serviceType = '';
 
     /**
      * @var AddressContract
@@ -28,12 +28,12 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     /**
      * @var int
      */
-    private $dataCoding;
+    private $dataCoding = DataCoding::DEFAULT;
 
     /**
      * @var string
      */
-    private $shortMessage;
+    private $shortMessage = '';
 
     /**
      * @var int
@@ -53,7 +53,7 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     /**
      * @var int
      */
-    private $registeredDelivery;
+    private $registeredDelivery = 1;
 
     /**
      * @var int

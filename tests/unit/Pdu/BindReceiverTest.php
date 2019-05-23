@@ -3,7 +3,6 @@
 namespace tests\unit\Pdu;
 
 use alexeevdv\React\Smpp\Pdu\BindReceiver;
-use alexeevdv\React\Smpp\Proto\Contract\Address;
 use Codeception\Test\Unit;
 
 class BindReceiverTest extends Unit
