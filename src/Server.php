@@ -95,7 +95,7 @@ final class Server extends EventEmitter implements ServerInterface
                 $connection->write($pdu->__toString());
             });
 
-            $that->emit('connection', []);
+            $that->emit('connection', [$connection]);
         });
     }
 

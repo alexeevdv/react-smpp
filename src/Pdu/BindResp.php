@@ -11,9 +11,9 @@ abstract class BindResp extends Pdu implements Contract\BindResp
      */
     private $systemId;
 
-    public function __construct(int $status, int $sequence, $body = '')
+    public function __construct($body = '')
     {
-        parent::__construct($status, $sequence, $body);
+        parent::__construct($body);
         if (strlen($body) === null) {
             return;
         }
