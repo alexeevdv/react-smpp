@@ -7,22 +7,20 @@ abstract class Pdu implements Contract\Pdu
     /**
      * @var int
      */
-    private $commandStatus;
+    private $commandStatus = 0;
 
     /**
      * @var int
      */
-    private $sequenceNumber;
+    private $sequenceNumber = 1;
 
     /**
      * @var string
      */
     private $body;
 
-    public function __construct(int $status, int $sequence, $body = '')
+    public function __construct($body = '')
     {
-        $this->commandStatus = $status;
-        $this->sequenceNumber = $sequence;
         $this->body = $body;
     }
 
@@ -36,7 +34,7 @@ abstract class Pdu implements Contract\Pdu
         return $this->commandStatus;
     }
 
-    public function sendCommandStatus(int $status): self
+    public function setCommandStatus(int $status): self
     {
         $this->commandStatus = $status;
         return $this;
@@ -45,6 +43,12 @@ abstract class Pdu implements Contract\Pdu
     public function getSequenceNumber(): int
     {
         return $this->sequenceNumber;
+    }
+
+    public function setSequenceNumber(int $sequenceNumber): self
+    {
+        $this->sequenceNumber = $sequenceNumber;
+        return $this;
     }
 
     public function getBody(): string

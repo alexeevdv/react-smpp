@@ -53,10 +53,10 @@ class Factory implements Contract\Factory
         }
 
         $className = $this->classMap[$id];
-        return new $className(
-            $status,
-            $sequence,
-            substr($buffer, 16)
-        );
+        /** @var Pdu $pdu */
+        $pdu = new $className(substr($buffer, 16));
+        $pdu->setCommandStatus($status);
+        $pdu->setSequenceNumber($sequence);
+        return $pdu;
     }
 }

@@ -10,7 +10,7 @@ class SubmitSmRespTest extends Unit
     public function testParseData()
     {
         $rawData = '64336163303766392d343362382d343263372d623330342d34333334383732656332393900';
-        $pdu = new SubmitSmResp(0, 1, hex2bin($rawData));
+        $pdu = new SubmitSmResp(hex2bin($rawData));
         $this->assertEquals('d3ac07f9-43b8-42c7-b304-4334872ec299', $pdu->getMessageId());
     }
 

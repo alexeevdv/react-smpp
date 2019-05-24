@@ -11,9 +11,9 @@ class SubmitSmResp extends Pdu implements Contract\SubmitSmResp
      */
     private $messageId;
 
-    public function __construct(int $status = 0, int $sequence = 1, $body = '')
+    public function __construct($body = '')
     {
-        parent::__construct($status, $sequence, $body);
+        parent::__construct($body);
 
         if (strlen($body) === 0) {
             return;

@@ -2,7 +2,6 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
@@ -33,9 +32,9 @@ abstract class Bind extends Pdu implements Contract\Bind
      */
     private $address;
 
-    public function __construct(int $status = 0, int $sequence = 1, $body = '')
+    public function __construct($body = '')
     {
-        parent::__construct($status, $sequence, $body);
+        parent::__construct($body);
         if (strlen($body) === 0) {
             return;
         }

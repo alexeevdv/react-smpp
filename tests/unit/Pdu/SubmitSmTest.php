@@ -18,7 +18,7 @@ class SubmitSmTest extends Unit
         $message.= "003300300020043c0438043d04430442002e005b004500660075006e00200050";
         $message.= "006c006100740066006f0072006d005d";
 
-        $pdu = new SubmitSm(0, 1, hex2bin($rawData . $message));
+        $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
         $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
@@ -40,7 +40,7 @@ class SubmitSmTest extends Unit
         $rawData = '0005013334313630343630303630000501323334383131373835393039330000000000000100000006';
         $message = '313233343536';
 
-        $pdu = new SubmitSm(0, 1, hex2bin($rawData . $message));
+        $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
         $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
@@ -65,7 +65,7 @@ class SubmitSmTest extends Unit
         $message.= '2ded9d4d8e2d520d220e1d8e1e2d5dce320e120416e67656c736f7068696120d8';
         $message.= '20d8d3e0d0d9e2d520dfde2de1d2ded5dce321';
 
-        $pdu = new SubmitSm(0, 1, hex2bin($rawData . $message));
+        $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
         $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
@@ -90,7 +90,7 @@ class SubmitSmTest extends Unit
         $message.= "003300300020043c0438043d04430442002e005b004500660075006e00200050";
         $message.= "006c006100740066006f0072006d005d";
 
-        $pdu = new SubmitSm();
+        $pdu = new SubmitSm;
 
         $pdu->setServiceType('');
         $pdu->setSourceAddress(

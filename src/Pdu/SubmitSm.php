@@ -75,9 +75,9 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
      */
     private $smDefaultMsgId = 0;
 
-    public function __construct(int $status = 0, int $sequence = 1, $body = '')
+    public function __construct($body = '')
     {
-        parent::__construct($status, $sequence, $body);
+        parent::__construct($body);
 
         if (strlen($body) === 0) {
             return;

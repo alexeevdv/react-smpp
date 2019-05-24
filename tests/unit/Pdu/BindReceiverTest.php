@@ -10,7 +10,7 @@ class BindReceiverTest extends Unit
     public function testParsingRawData()
     {
         $data = '546573745f73667477005a66342a5055526d000034000000';
-        $pdu = new BindReceiver(0x00000000, 0x00000001, hex2bin($data));
+        $pdu = new BindReceiver(hex2bin($data));
 
         $this->assertEquals('Test_sftw', $pdu->getSystemId());
         $this->assertEquals('Zf4*PURm', $pdu->getPassword());
