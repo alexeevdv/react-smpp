@@ -75,7 +75,6 @@ class DataWrapper
             $data .= $this->data[$this->position];
             $this->position++;
         }
-        $this->position++;
 
         return $data;
     }
