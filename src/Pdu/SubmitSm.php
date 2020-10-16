@@ -10,6 +10,8 @@ use DateTimeInterface;
 
 class SubmitSm extends Pdu implements Contract\SubmitSm
 {
+    use TLVTrait;
+
     /**
      * @var string
      */
@@ -160,7 +162,7 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         ussd_service_op TLV
 
         */
-
+        $this->generateFromDatawrapper($wrapper);
     }
 
     public function getCommandId(): int

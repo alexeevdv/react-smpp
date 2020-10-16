@@ -6,6 +6,8 @@ use alexeevdv\React\Smpp\Utils\DataWrapper;
 
 abstract class BindResp extends Pdu implements Contract\BindResp
 {
+    use TLVTrait;
+
     /**
      * @var string
      */
@@ -27,6 +29,7 @@ abstract class BindResp extends Pdu implements Contract\BindResp
          *
          * sc_interface_version TLV
          */
+        $this->generateFromDatawrapper($wrapper);
     }
 
     public function getSystemId(): string
