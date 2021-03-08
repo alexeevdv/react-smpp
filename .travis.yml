@@ -11,7 +11,7 @@ install:
 
 script:
   - vendor/bin/phpcs --standard=PSR12 src
-  - php vendor/bin/codecept run --coverage --coverage-xml
+  - XDEBUG_MODE=coverage php vendor/bin/codecept run --coverage --coverage-xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
