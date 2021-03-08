@@ -117,8 +117,8 @@ class DataWrapper
 
     public function readAddress($maxLength = 21): ?AddressContract
     {
-        $ton = $this->readInt8();
-        $npi = $this->readInt8();
+        $ton = new Address\Ton($this->readInt8());
+        $npi = new Address\Npi($this->readInt8());
         $value = $this->readNullTerminatedString($maxLength);
         return strlen($value) ? new Address($ton, $npi, $value) : null;
     }
@@ -126,8 +126,8 @@ class DataWrapper
     public function writeAddress(?AddressContract $address): self
     {
         return $this
-            ->writeInt8($address ? $address->getTon() : 0)
-            ->writeInt8($address ? $address->getNpi() : 0)
+            ->writeInt8($address ? $address->getTon()->toInteger() : 0)
+            ->writeInt8($address ? $address->getNpi()->toInteger() : 0)
             ->writeNullTerminatedString($address ? $address->getValue() : '')
         ;
     }
