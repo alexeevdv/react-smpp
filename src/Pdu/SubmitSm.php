@@ -160,7 +160,6 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         ussd_service_op TLV
 
         */
-
     }
 
     public function getCommandId(): int
