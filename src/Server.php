@@ -39,7 +39,7 @@ final class Server extends EventEmitter implements ServerInterface
             // TODO start timer for enquire_link
 
             $connection->on('data', function ($data) use ($connection) {
-                $pduFactory = new Factory;
+                $pduFactory = new Factory();
                 try {
                     $pdu = $pduFactory->createFromBuffer($data);
                     $connection->emit('pdu', [$pdu]);

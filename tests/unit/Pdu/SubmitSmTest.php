@@ -21,11 +21,11 @@ class SubmitSmTest extends Unit
         $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
-        $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
-        $this->assertEquals(0, $pdu->getSourceAddress()->getNpi());
+        $this->assertEquals(Address\Ton::alphanumeric(), $pdu->getSourceAddress()->getTon());
+        $this->assertEquals(Address\Npi::unknown(), $pdu->getSourceAddress()->getNpi());
         $this->assertEquals('Efun', $pdu->getSourceAddress()->getValue());
-        $this->assertEquals(1, $pdu->getDestinationAddress()->getTon());
-        $this->assertEquals(1, $pdu->getDestinationAddress()->getNpi());
+        $this->assertEquals(Address\Ton::international(), $pdu->getDestinationAddress()->getTon());
+        $this->assertEquals(Address\Npi::isdn(), $pdu->getDestinationAddress()->getNpi());
         $this->assertEquals('79998739738', $pdu->getDestinationAddress()->getValue());
         $this->assertEquals(3, $pdu->getEsmClass());
         $this->assertEquals(8, $pdu->getDataCoding());
@@ -43,11 +43,11 @@ class SubmitSmTest extends Unit
         $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
-        $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
-        $this->assertEquals(1, $pdu->getSourceAddress()->getNpi());
+        $this->assertEquals(Address\Ton::alphanumeric(), $pdu->getSourceAddress()->getTon());
+        $this->assertEquals(Address\Npi::isdn(), $pdu->getSourceAddress()->getNpi());
         $this->assertEquals('34160460060', $pdu->getSourceAddress()->getValue());
-        $this->assertEquals(5, $pdu->getDestinationAddress()->getTon());
-        $this->assertEquals(1, $pdu->getDestinationAddress()->getNpi());
+        $this->assertEquals(Address\Ton::alphanumeric(), $pdu->getDestinationAddress()->getTon());
+        $this->assertEquals(Address\Npi::isdn(), $pdu->getDestinationAddress()->getNpi());
         $this->assertEquals('2348117859093', $pdu->getDestinationAddress()->getValue());
         $this->assertEquals(0, $pdu->getEsmClass());
         $this->assertEquals(0, $pdu->getDataCoding());
@@ -68,11 +68,11 @@ class SubmitSmTest extends Unit
         $pdu = new SubmitSm(hex2bin($rawData . $message));
 
         $this->assertEquals('', $pdu->getServiceType());
-        $this->assertEquals(5, $pdu->getSourceAddress()->getTon());
-        $this->assertEquals(1, $pdu->getSourceAddress()->getNpi());
+        $this->assertEquals(Address\Ton::alphanumeric(), $pdu->getSourceAddress()->getTon());
+        $this->assertEquals(Address\Npi::isdn(), $pdu->getSourceAddress()->getNpi());
         $this->assertEquals('34160460060', $pdu->getSourceAddress()->getValue());
-        $this->assertEquals(5, $pdu->getDestinationAddress()->getTon());
-        $this->assertEquals(1, $pdu->getDestinationAddress()->getNpi());
+        $this->assertEquals(Address\Ton::alphanumeric(), $pdu->getDestinationAddress()->getTon());
+        $this->assertEquals(Address\Npi::isdn(), $pdu->getDestinationAddress()->getNpi());
         $this->assertEquals('2348117646892', $pdu->getDestinationAddress()->getValue());
         $this->assertEquals(0, $pdu->getEsmClass());
         $this->assertEquals(6, $pdu->getDataCoding());
@@ -93,19 +93,15 @@ class SubmitSmTest extends Unit
         $pdu = new SubmitSm;
 
         $pdu->setServiceType('');
-        $pdu->setSourceAddress(
-            $this->makeEmpty(Address::class, [
-                'getTon' => 5,
-                'getNpi' => 0,
-                'getValue' => 'Efun',
-            ])
-        );
-        $pdu->setDestinationAddress(
-            $this->makeEmpty(Address::class, [
-                'getTon' => 1,
-                'getNpi' => 1,
-                'getValue' => '79998739738'
-            ])
+        $pdu->setSourceAddress(new Address(
+            Address\Ton::alphanumeric(),
+            Address\Npi::unknown(),
+            'Efun'
+        ));
+        $pdu->setDestinationAddress(new Address(
+            Address\Ton::international(),
+            Address\Npi::isdn(),
+            '79998739738')
         );
         $pdu->setEsmClass(3);
         $pdu->setDataCoding(8);

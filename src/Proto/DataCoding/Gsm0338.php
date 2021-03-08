@@ -9,8 +9,13 @@ class Gsm0338 implements DataCoding
     public function encode(string $data): string
     {
         $replaced = strtr($data, $this->getMapping());
-        // Replace unconverted UTF-8 chars from codepages U+0080-U+07FF, U+0080-U+FFFF and U+010000-U+10FFFF with a single ?
-        return preg_replace('/([\\xC0-\\xDF].)|([\\xE0-\\xEF]..)|([\\xF0-\\xFF]...)/m','?', $replaced);
+        // Replace unconverted UTF-8 chars from codepages U+0080-U+07FF,
+        // U+0080-U+FFFF and U+010000-U+10FFFF with a single ?
+        return preg_replace(
+            '/([\\xC0-\\xDF].)|([\\xE0-\\xEF]..)|([\\xF0-\\xFF]...)/m',
+            '?',
+            $replaced
+        );
     }
 
     public function decode(string $data): string
