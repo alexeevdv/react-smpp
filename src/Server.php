@@ -2,120 +2,100 @@
 
 namespace alexeevdv\React\Smpp;
 
-use alexeevdv\React\Smpp\Pdu\BindReceiver;
-use alexeevdv\React\Smpp\Pdu\BindTransceiver;
-use alexeevdv\React\Smpp\Pdu\CancelSm;
-use alexeevdv\React\Smpp\Pdu\Contract\BindTransmitter;
-use alexeevdv\React\Smpp\Pdu\Contract\Pdu;
-use alexeevdv\React\Smpp\Pdu\Contract\SubmitSm;
-use alexeevdv\React\Smpp\Pdu\DeliverSmResp;
 use alexeevdv\React\Smpp\Pdu\EnquireLink;
+use alexeevdv\React\Smpp\Pdu\EnquireLinkResp;
 use alexeevdv\React\Smpp\Pdu\Factory;
-use alexeevdv\React\Smpp\Pdu\QuerySm;
-use alexeevdv\React\Smpp\Pdu\ReplaceSm;
-use alexeevdv\React\Smpp\Pdu\Unbind;
-use Evenement\EventEmitter;
-use React\EventLoop\LoopInterface;
+use alexeevdv\React\Smpp\Proto\CommandStatus;
+use Psr\Log\LoggerInterface;
 use React\Socket\ConnectionInterface;
 use React\Socket\Server as SocketServer;
 use React\Socket\ServerInterface;
 
-final class Server extends EventEmitter implements ServerInterface
+class Server implements ServerInterface
 {
     /**
      * @var SocketServer
      */
-    private $server;
+    private $socketServer;
 
-    public function __construct($uri, LoopInterface $loop, array $context = array())
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(SocketServer $socketServer, LoggerInterface $logger)
     {
-        $server = new SocketServer($uri, $loop, $context);
-        $this->server = $server;
+        $this->socketServer = $socketServer;
+        $this->logger = $logger;
 
-        $that = $this;
-        $this->server->on('connection', function (ConnectionInterface $conn) use ($loop, $that) {
-            $connection = new Connection($conn);
+        $this->socketServer->on('connection', function (ConnectionInterface $conn) {
+            $this->logger->info('SMPP client connected. IP address: {address}', [
+                'address' => $conn->getRemoteAddress(),
+            ]);
+
+            $connection = new Connection($conn, new Factory(), $this->logger);
 
             // TODO start timer for enquire_link
 
-            $connection->on('data', function ($data) use ($connection) {
-                $pduFactory = new Factory();
-                try {
-                    $pdu = $pduFactory->createFromBuffer($data);
-                    $connection->emit('pdu', [$pdu]);
-                } catch (\Exception $e) {
-                    // TODO GENERIC_NACK
-                    $connection->emit('error', [$e]);
-                }
+            $connection->on(EnquireLink::class, function (EnquireLink $pdu) use ($connection) {
+                $this->logger->info('enquire_link');
+                $response = new EnquireLinkResp();
+                $response->setCommandStatus(CommandStatus::ESME_RSYSERR);
+                $response->setSequenceNumber($pdu->getSequenceNumber());
+                $connection->replyWith($response);
             });
 
-            $connection->on('pdu', function (Pdu $pdu) use ($connection) {
-                if ($pdu instanceof BindReceiver) {
-                    return $connection->emit('bind_receiver', [$pdu]);
-                }
-
-                if ($pdu instanceof BindTransmitter) {
-                    return $connection->emit('bind_transmitter', [$pdu]);
-                }
-
-                if ($pdu instanceof QuerySm) {
-                    return $connection->emit('query_sm', [$pdu]);
-                }
-
-                if ($pdu instanceof SubmitSm) {
-                    return $connection->emit('submit_sm', [$pdu]);
-                }
-
-                if ($pdu instanceof DeliverSmResp) {
-                    return $connection->emit('deliver_sm_resp', [$pdu]);
-                }
-
-                if ($pdu instanceof Unbind) {
-                    return $connection->emit('unbind', [$pdu]);
-                }
-
-                if ($pdu instanceof ReplaceSm) {
-                    return $connection->emit('replace_sm', [$pdu]);
-                }
-
-                if ($pdu instanceof CancelSm) {
-                    return $connection->emit('cancel_sm', [$pdu]);
-                }
-
-                if ($pdu instanceof BindTransceiver) {
-                    return $connection->emit('bind_transceiver', [$pdu]);
-                }
-
-                if ($pdu instanceof EnquireLink) {
-                    return $connection->emit('enquire_link', [$pdu]);
-                }
-            });
-
-            $connection->on('send', function (Pdu $pdu) use ($connection) {
-                $connection->write($pdu->__toString());
-            });
-
-            $that->emit('connection', [$connection]);
+            $this->socketServer->emit(Connection::class, [$connection]);
         });
     }
 
     public function getAddress()
     {
-        return $this->server->getAddress();
+        return $this->socketServer->getAddress();
     }
 
     public function pause()
     {
-        $this->server->pause();
+        $this->socketServer->pause();
     }
 
     public function resume()
     {
-        $this->server->resume();
+        $this->socketServer->resume();
     }
 
     public function close()
     {
-        $this->server->close();
+        $this->socketServer->close();
+    }
+
+    public function on($event, callable $listener)
+    {
+        $this->socketServer->on($event, $listener);
+    }
+
+    public function once($event, callable $listener)
+    {
+        $this->socketServer->once($event, $listener);
+    }
+
+    public function removeListener($event, callable $listener)
+    {
+        $this->socketServer->removeListener($event, $listener);
+    }
+
+    public function removeAllListeners($event = null)
+    {
+        $this->socketServer->removeAllListeners($event);
+    }
+
+    public function listeners($event = null)
+    {
+        $this->socketServer->listeners($event);
+    }
+
+    public function emit($event, array $arguments = [])
+    {
+        $this->socketServer->emit($event, $arguments);
     }
 }
