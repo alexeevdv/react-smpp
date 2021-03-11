@@ -9,6 +9,8 @@ use alexeevdv\React\Smpp\Pdu\DeliverSmResp;
 use alexeevdv\React\Smpp\Pdu\SubmitSm;
 use alexeevdv\React\Smpp\Pdu\SubmitSmResp;
 use alexeevdv\React\Smpp\Proto\Address;
+use alexeevdv\React\Smpp\Proto\Address\Ton;
+use alexeevdv\React\Smpp\Proto\Address\Npi;
 use Firehed\SimpleLogger\Stdout;
 use React\EventLoop\Factory as LoopFactory;
 use React\Socket\Connector;
@@ -39,16 +41,8 @@ $smppClient
                 $logger->info('Binded');
 
                 $submitSm = new SubmitSm();
-                $submitSm->setSourceAddress(new Address(
-                    Address\Ton::international(),
-                    Address\Npi::isdn(),
-                    '1234567890'
-                ));
-                $submitSm->setDestinationAddress(new Address(
-                    Address\Ton::international(),
-                    Address\Npi::isdn(),
-                    '1234567890'
-                ));
+                $submitSm->setSourceAddress(new Address(Ton::international(), Npi::isdn(), '1234567890'));
+                $submitSm->setDestinationAddress(new Address(Ton::international(), Npi::isdn(), '1234567890'));
                 $submitSm->setShortMessage('Hello there!');
                 return $connection->send($submitSm);
             })

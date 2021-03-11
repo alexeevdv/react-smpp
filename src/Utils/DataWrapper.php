@@ -75,7 +75,6 @@ class DataWrapper
             $data .= $this->data[$this->position];
             $this->position++;
         }
-        $this->position++;
 
         return $data;
     }
@@ -115,12 +114,12 @@ class DataWrapper
         return $this->data;
     }
 
-    public function readAddress($maxLength = 21): ?AddressContract
+    public function readAddress($maxLength = 21): AddressContract
     {
         $ton = new Address\Ton($this->readInt8());
         $npi = new Address\Npi($this->readInt8());
         $value = $this->readNullTerminatedString($maxLength);
-        return strlen($value) ? new Address($ton, $npi, $value) : null;
+        return new Address($ton, $npi, $value);
     }
 
     public function writeAddress(?AddressContract $address): self
