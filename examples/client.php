@@ -18,10 +18,9 @@ require_once 'vendor/autoload.php';
 $loop = LoopFactory::create();
 $logger = new Stdout();
 $connector = new Connector($loop);
+$smppClient = new Client($connector, $loop);
 
-$client = new Client($connector);
-
-$client
+$smppClient
     ->connect('127.0.0.1:2775')
     ->then(function (Connection $connection) use ($logger) {
         $logger->info('Connected');
@@ -57,7 +56,7 @@ $client
                 $logger->info('Submited. message_id: {messageId}', [
                     'messageId' => $pdu->getMessageId(),
                 ]);
-                $connection->end();
+                $connection->close();
             })
         ;
     })

@@ -2,12 +2,13 @@
 
 namespace alexeevdv\React\Smpp;
 
-use alexeevdv\React\Smpp\Pdu\Contract\Pdu;
+use alexeevdv\React\Smpp\Pdu\Pdu;
 use alexeevdv\React\Smpp\Pdu\Factory;
 use Psr\Log\LoggerInterface;
 use React\Promise\Deferred;
 use React\Promise\Promise;
 use React\Socket\ConnectionInterface;
+use React\Stream\Util;
 use React\Stream\WritableStreamInterface;
 
 class Connection implements ConnectionInterface
@@ -148,6 +149,8 @@ class Connection implements ConnectionInterface
 
     public function send(Pdu $pdu, float $timeout = 2.0): Promise
     {
+        $pdu->setSequenceNumber($this->getNextSequenceNumber());
+
         $deferred = new Deferred();
 
         // TODO implement timeout for $deferred->reject()

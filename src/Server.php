@@ -35,7 +35,7 @@ class Server implements ServerInterface
 
             $connection = new Connection($conn, new Factory(), $this->logger);
 
-            // TODO start timer for enquire_link
+            // TODO start timer for enquire_link. if exceeded - close connection
 
             $connection->on(EnquireLink::class, function (EnquireLink $pdu) use ($connection) {
                 $this->logger->info('enquire_link');
