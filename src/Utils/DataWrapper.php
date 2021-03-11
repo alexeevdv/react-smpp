@@ -4,7 +4,6 @@ namespace alexeevdv\React\Smpp\Utils;
 
 use alexeevdv\React\Smpp\Pdu\TLV;
 use alexeevdv\React\Smpp\Proto\Address;
-use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
 
 class DataWrapper
 {
@@ -114,7 +113,7 @@ class DataWrapper
         return $this->data;
     }
 
-    public function readAddress($maxLength = 21): AddressContract
+    public function readAddress($maxLength = 21): Address
     {
         $ton = new Address\Ton($this->readInt8());
         $npi = new Address\Npi($this->readInt8());
@@ -122,7 +121,7 @@ class DataWrapper
         return new Address($ton, $npi, $value);
     }
 
-    public function writeAddress(?AddressContract $address): self
+    public function writeAddress(?Address $address): self
     {
         return $this
             ->writeInt8($address ? $address->getTon()->toInteger() : 0)

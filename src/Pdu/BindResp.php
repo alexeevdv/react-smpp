@@ -4,7 +4,7 @@ namespace alexeevdv\React\Smpp\Pdu;
 
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
-abstract class BindResp extends Pdu implements Contract\BindResp
+abstract class BindResp extends Pdu
 {
     /**
      * @var string

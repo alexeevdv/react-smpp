@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class DeliverSm extends SubmitSm implements Contract\DeliverSm
+class DeliverSm extends SubmitSm
 {
     public function getCommandId(): int
     {

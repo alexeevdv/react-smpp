@@ -2,10 +2,10 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
+use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
-abstract class Bind extends Pdu implements Contract\Bind
+abstract class Bind extends Pdu
 {
     /**
      * @var string
@@ -28,7 +28,7 @@ abstract class Bind extends Pdu implements Contract\Bind
     private $interfaceVersion;
 
     /**
-     * @var AddressContract
+     * @var Address
      */
     private $address;
 
@@ -101,12 +101,12 @@ abstract class Bind extends Pdu implements Contract\Bind
         return $this;
     }
 
-    public function getAddress(): ?AddressContract
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    public function setAddress(?AddressContract $address): self
+    public function setAddress(?Address $address): self
     {
         $this->address = $address;
         return $this;

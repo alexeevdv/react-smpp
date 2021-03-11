@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class EnquireLink extends Pdu implements Contract\EnquireLink
+class EnquireLink extends Pdu
 {
     public function getCommandId(): int
     {

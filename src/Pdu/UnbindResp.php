@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class UnbindResp extends Pdu implements Contract\UnbindResp
+class UnbindResp extends Pdu
 {
     public function getCommandId(): int
     {

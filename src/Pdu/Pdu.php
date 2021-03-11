@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-abstract class Pdu implements Contract\Pdu
+abstract class Pdu
 {
     /**
      * @var int
