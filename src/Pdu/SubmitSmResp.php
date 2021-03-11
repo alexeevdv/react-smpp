@@ -4,7 +4,7 @@ namespace alexeevdv\React\Smpp\Pdu;
 
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
-class SubmitSmResp extends Pdu implements Contract\SubmitSmResp
+class SubmitSmResp extends Pdu
 {
     /**
      * @var string

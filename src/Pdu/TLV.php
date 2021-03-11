@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class TLV implements Contract\TLV
+class TLV
 {
     /**
      * @var int

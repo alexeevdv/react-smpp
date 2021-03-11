@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class GenericNack extends Pdu implements Contract\GenericNack
+class GenericNack extends Pdu
 {
     public function getCommandId(): int
     {

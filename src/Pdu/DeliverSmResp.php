@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class DeliverSmResp extends SubmitSmResp implements Contract\DeliverSmResp
+class DeliverSmResp extends SubmitSmResp
 {
     public function getCommandId(): int
     {

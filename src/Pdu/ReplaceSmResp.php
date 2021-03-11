@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class ReplaceSmResp extends Pdu implements Contract\ReplaceSmResp
+class ReplaceSmResp extends Pdu
 {
     public function getCommandId(): int
     {

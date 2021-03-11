@@ -6,7 +6,7 @@ use alexeevdv\React\Smpp\Exception\MalformedPdu;
 use alexeevdv\React\Smpp\Exception\UnknownPdu;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 
-class Factory implements Contract\Factory
+class Factory
 {
     private $classMap = [
         0x80000000 => GenericNack::class,
@@ -32,7 +32,7 @@ class Factory implements Contract\Factory
         0x80000015 => EnquireLinkResp::class,
     ];
 
-    public function createFromBuffer(string $buffer): Contract\Pdu
+    public function createFromBuffer(string $buffer): Pdu
     {
         $wrapper = new DataWrapper($buffer);
         if ($wrapper->bytesLeft() < 16) {

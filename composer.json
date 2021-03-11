@@ -1,6 +1,7 @@
 {
     "name": "alexeevdv/react-smpp",
     "description": "Async SMPP server and client implementations for ReactPHP.",
+    "license": "MIT",
     "keywords": ["react", "reactphp", "smpp"],
     "autoload": {
         "psr-4": {

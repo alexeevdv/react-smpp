@@ -2,13 +2,13 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-use alexeevdv\React\Smpp\Proto\Contract\Address as AddressContract;
+use alexeevdv\React\Smpp\Proto\Address;
 use alexeevdv\React\Smpp\Proto\Contract\DataCoding;
 use alexeevdv\React\Smpp\Proto\DateTime;
 use alexeevdv\React\Smpp\Utils\DataWrapper;
 use DateTimeInterface;
 
-class SubmitSm extends Pdu implements Contract\SubmitSm
+class SubmitSm extends Pdu
 {
     /**
      * @var string
@@ -16,12 +16,12 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
     private $serviceType = '';
 
     /**
-     * @var AddressContract
+     * @var Address
      */
     private $sourceAddress;
 
     /**
-     * @var AddressContract
+     * @var Address
      */
     private $destinationAddress;
 
@@ -178,23 +178,23 @@ class SubmitSm extends Pdu implements Contract\SubmitSm
         return $this;
     }
 
-    public function getSourceAddress(): ?AddressContract
+    public function getSourceAddress(): ?Address
     {
         return $this->sourceAddress;
     }
 
-    public function setSourceAddress(?AddressContract $address): self
+    public function setSourceAddress(?Address $address): self
     {
         $this->sourceAddress = $address;
         return $this;
     }
 
-    public function getDestinationAddress(): AddressContract
+    public function getDestinationAddress(): Address
     {
         return $this->destinationAddress;
     }
 
-    public function setDestinationAddress(AddressContract $address): self
+    public function setDestinationAddress(Address $address): self
     {
         $this->destinationAddress = $address;
         return $this;

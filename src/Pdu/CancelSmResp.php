@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class CancelSmResp extends Pdu implements Contract\CancelSmResp
+class CancelSmResp extends Pdu
 {
     public function getCommandId(): int
     {

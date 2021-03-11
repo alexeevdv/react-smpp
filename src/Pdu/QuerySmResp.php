@@ -2,7 +2,7 @@
 
 namespace alexeevdv\React\Smpp\Pdu;
 
-class QuerySmResp extends Pdu implements Contract\QuerySmResp
+class QuerySmResp extends Pdu
 {
     public function getCommandId(): int
     {

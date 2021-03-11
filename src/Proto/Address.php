@@ -5,7 +5,7 @@ namespace alexeevdv\React\Smpp\Proto;
 use alexeevdv\React\Smpp\Proto\Address\Npi;
 use alexeevdv\React\Smpp\Proto\Address\Ton;
 
-class Address implements Contract\Address
+class Address
 {
     /**
      * @var Ton
