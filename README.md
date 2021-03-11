@@ -2,46 +2,24 @@
 
 Async SMPP server and client implementations for ReactPHP.
 
-## SMPP server example
+## Installation
 
-```php
-<?php
+The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
-use alexeevdv\React\Smpp\Pdu\BindTransmitterResp;
-use alexeevdv\React\Smpp\Pdu\Contract\BindTransmitter;
-use alexeevdv\React\Smpp\Pdu\SubmitSm;
-use alexeevdv\React\Smpp\Proto\CommandStatus;
-use alexeevdv\React\Smpp\Server;
-use React\Socket\ConnectionInterface;
+Either run
 
-require_once 'vendor/autoload.php';
-
-$loop = React\EventLoop\Factory::create();
-$smppServer = new Server('127.0.0.1:2775', $loop);
-
-$smppServer->on('connection', function (ConnectionInterface $connection) use ($loop) {
-    echo 'SMPP client connected' . PHP_EOL;
-
-    $connection->on('data', function ($data) {
-        echo bin2hex($data) . PHP_EOL;
-    });
-
-    $connection->on('bind_transmitter', function (BindTransmitter $pdu) use ($connection) {
-        echo 'BIND' . PHP_EOL;
-        $response = new BindTransmitterResp(CommandStatus::ESME_ROK, $pdu->getSequenceNumber());
-        $connection->emit('send', [$response]);
-    });
-
-    $connection->on('submit_sm', function (SubmitSm $pdu) use ($connection) {
-
-    });
-
-    $connection->on('error', function ($error) use ($connection) {
-        echo 'ERROR' . PHP_EOL;
-        //var_dump($error);
-        //$connection->close();
-    });
-});
-
-$loop->run();
+```bash
+$ php composer.phar require alexeevdv/react-smpp 1.0.*
 ```
+
+or add
+
+```json
+"alexeevdv/react-smpp": 1.0.*
+```
+
+to the `require` section of your `composer.json` file.
+
+## Examples
+
+You can find SMPP [client](examples/client.php) and [server](examples/server.php) sample implementations in the `examples` folder.
