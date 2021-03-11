@@ -9,13 +9,13 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```bash
-$ php composer.phar require alexeevdv/react-smpp 1.0.*
+$ php composer.phar require alexeevdv/react-smpp 1.0.x-dev
 ```
 
 or add
 
 ```json
-"alexeevdv/react-smpp": 1.0.*
+"alexeevdv/react-smpp": "1.0.x-dev"
 ```
 
 to the `require` section of your `composer.json` file.
